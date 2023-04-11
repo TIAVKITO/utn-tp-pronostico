@@ -31,4 +31,29 @@ public class Reader {
 		}
 		this.lineasArchivo = listaDeResultados;
 	}
+
+	public ArrayList<Resultados> listarResultados() {
+        boolean servicioYaCargado = false;
+        ArrayList<ArchivoResultados> resultados = new ArrayList<>();
+
+            for (ArchivoResultados objeto : this.lineasArchivo) {
+                servicioYaCargado = false;
+                ArchivoResultados nuevoResultado = new ArchivoResultados(objeto.get_equipo1_id(),
+                        								
+
+
+                        								);
+
+                for ( Servicio servicioGuardado : servicios) {
+                    if (nuevoServicio.getIdentificadorServicio().equals(servicioGuardado.getIdentificadorServicio())) {
+                        servicioYaCargado = true;
+                        break;
+                    }
+                }
+                if (!servicioYaCargado) {
+                    servicios.add(nuevoServicio);
+                }
+        }
+        return servicios;
+	}
 }

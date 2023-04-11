@@ -83,3 +83,4 @@ public class ArchivoResultados {
     public void set_equipo2_descripcion(String equipo2_descripcion) {
         this.equipo2_descripcion = equipo2_descripcion;
     }
+}
