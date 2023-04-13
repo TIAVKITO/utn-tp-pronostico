@@ -25,7 +25,7 @@ public class Main {
         // leo resultados y los guardo en un List
         List<Partido> partidos = lectorArchivos.parsearResultados();
 
-        
+        lectorArchivos.parsearPronostico();
 
         // mostrar los puntos
         System.out.println("Los puntos obtenidos por el usuario fueron:");

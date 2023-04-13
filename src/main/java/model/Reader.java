@@ -72,11 +72,11 @@ public class Reader {
 
                 // me fijo q la linea de pronostico q estoy leyendo coincida con la "linea" del partido q ya guarde
                 for (Partido partidoCol : partidos) {
-                    if (partidoCol.getEquipo1().getNombre().equals(equipo1.getNombre())
-                     && partidoCol.getEquipo2().getNombre().equals(equipo2.getNombre())) {
+                    if (   partidoCol.getEquipo1().getNombre().equals(equipo1.getNombre())
+                     	&& partidoCol.getEquipo2().getNombre().equals(equipo2.getNombre())) {
                         
                         partido = partidoCol;
-                        
+                // si las lineas coinciden me fijo q equipo gano, perdio o si empataron
 		                Equipo equipo = null;
 		                EnumResultado resultado = null;
 		                if("X".equals(campos[1])) {
@@ -91,6 +91,7 @@ public class Reader {
 		                    equipo = equipo1;
 		                    resultado = EnumResultado.PERDEDOR;
 		                }
+		                
 		                Pronostico pronostico = new Pronostico(partido, equipo, resultado);
 		                // sumar los puntos correspondientes
 		                puntos += pronostico.puntos();
