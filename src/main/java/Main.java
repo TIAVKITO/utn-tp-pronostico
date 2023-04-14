@@ -1,12 +1,9 @@
-package com.pronosticosdeportivos;
+import com.model.Partido;
+import com.utilities.Reader;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class Main {
 	public static void main(String[] args) {
@@ -17,19 +14,22 @@ public class Main {
             System.exit(1);
         }
 
-        // paso la ruta y creo el objeto reader
+        // paso la ruta y creo el lector 
         Path pathResultados = Paths.get(args[0]);
         Path pathPronostico = Paths.get(args[1]);
         Reader lectorArchivos = new Reader(pathResultados, pathPronostico);
 
-        // leo resultados y los guardo en un List
-        List<Partido> partidos = lectorArchivos.parsearResultados();
+        // leo resultados y los guardo en una lista de partidos
+        ArrayList<Partido> partidos = new ArrayList<Partido>();
+        lectorArchivos.parsearResultados(partidos);
 
+        // leo pronosticos y calculo resultados
         lectorArchivos.parsearPronostico();
 
         // mostrar los puntos
         System.out.println("Los puntos obtenidos por el usuario fueron:");
-        System.out.println(puntos);
+        // ERROR NUNCA DECLARE puntos
+        //System.out.println(puntos);
 
 		
 	}

@@ -1,4 +1,4 @@
-package com.pronosticosdeportivos;
+package com.model;
 
 public class Ronda {
 
