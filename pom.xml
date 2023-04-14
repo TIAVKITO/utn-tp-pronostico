@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>utn-tp-pronostico</groupId>
     <artifactId>utn-tp-pronostico</artifactId>
-    <version>1</version>
+    <version>7</version>
 
     <dependencies>
         <dependency>
