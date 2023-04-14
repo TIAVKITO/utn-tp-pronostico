@@ -41,18 +41,18 @@ public class Reader {
             if (primera) {
                 primera = false;
             } else {
-                String[] campos = lineaResultado.split(",");
-                Equipo equipo1 = new Equipo(campos[0]);
-                Equipo equipo2 = new Equipo(campos[3]);
+                String[] campos = lineaResultado.split(";");
+                Equipo equipo1 = new Equipo(campos[1]);
+                Equipo equipo2 = new Equipo(campos[6]);
                 Partido partido = new Partido(equipo1, equipo2);
-                partido.setGolesEq1(Integer.parseInt(campos[1]));
-                partido.setGolesEq2(Integer.parseInt(campos[2]));
+                partido.setGolesEq1(Integer.parseInt(campos[3]));
+                partido.setGolesEq2(Integer.parseInt(campos[4]));
                 partidos.add(partido);
             }
 		}
 	}
 
-	public void parsearPronostico() {
+	public int parsearPronostico() {
         int puntos = 0;
         List<String> lineasPronostico = null;
 
@@ -69,7 +69,7 @@ public class Reader {
             if (primera) {
                 primera = false;
             } else {
-                String[] campos = lineaPronostico.split(",");
+                String[] campos = lineaPronostico.split(";");
                 Equipo equipo1 = new Equipo(campos[0]);
                 Equipo equipo2 = new Equipo(campos[4]);
                 Partido partido = null;
@@ -104,5 +104,6 @@ public class Reader {
 	            }
             }
         }
+        return puntos;
     }
 }
