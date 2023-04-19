@@ -5,6 +5,7 @@ public class Pronostico {
 	private Equipo equipo;
 	private EnumResultado resultado;
 
+	// constructor
 	public Pronostico(Partido partido, Equipo equipo, EnumResultado resultado) {
 		super();
 		this.partido = partido;
@@ -26,6 +27,7 @@ public class Pronostico {
 
 	public int puntos() {
 		// this.resultado -> prediccion
+		// seria mas facil pasarle el equipo_id ?
 		EnumResultado resultadoReal = this.partido.resultado(this.equipo);
 		if (this.resultado.equals(resultadoReal)) {
 			return 1;

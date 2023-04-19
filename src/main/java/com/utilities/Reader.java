@@ -18,6 +18,7 @@ public class Reader {
 	private Path pathPronostico;
 	private List<Partido> partidos = new ArrayList<>();
 
+	// constructor 
 	public Reader(Path pathResultados, Path pathPronostico) {
 		this.pathResultados = pathResultados;
 		this.pathPronostico = pathPronostico;
@@ -52,8 +53,9 @@ public class Reader {
 		}
 	}
 
-	public int parsearPronostico() {
+	public int parsearPronostico(ArrayList<Partido> partidos) {
         int puntos = 0;
+
         List<String> lineasPronostico = null;
 
 		// manejo el error si no puede leer las lineas del archivo .csv
@@ -83,6 +85,7 @@ public class Reader {
                         partido = partidoSeleccionado;
 		                Equipo equipo = null;
 		                EnumResultado resultado = null;
+
 		                if("X".equals(campos[1])) {
 		                    equipo = equipo1;
 		                    resultado = EnumResultado.GANADOR;
@@ -92,14 +95,22 @@ public class Reader {
 		                    resultado = EnumResultado.EMPATE;
 		                }
 		                if("X".equals(campos[3])) {
-		                    equipo = equipo1;
-		                    resultado = EnumResultado.PERDEDOR;
+		                    equipo = equipo2;
+		                    resultado = EnumResultado.GANADOR;
 		                }
 		                
-		                // creo la prediccion
+		                // creo la prediccion		               
 		                Pronostico pronostico = new Pronostico(partido, equipo, resultado);
+		                
+		                /*
+		                partido = partido seleccionado en el loop de partidos q coincide con la linea de pronostico q estoy leyendo
+		                equipo = el equipo ganador o equipo1 si es empate
+		                resultado = EnumResultado dependiendo de donde esta la X (GANADOR o EMPATE pq siempre paso el equipo ganador si hay)
+		                */		                
+
 		                // sumar los puntos correspondientes
 		                puntos += pronostico.puntos();
+		                //System.out.println(puntos);
 	            	}
 	            }
             }
