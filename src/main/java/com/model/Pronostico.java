@@ -1,40 +1,48 @@
 package com.model;
 
 public class Pronostico {
+	private int id;
+	private Participante participante;
 	private Partido partido;
 	private Equipo equipo;
 	private EnumResultado resultado;
 
 	// constructor
-	public Pronostico(Partido partido, Equipo equipo, EnumResultado resultado) {
+	public Pronostico(int id, Participante participante, Partido partido, Equipo equipo, EnumResultado resultado) {
 		super();
+		this.id = id;
+		this.participante = participante;
 		this.partido = partido;
 		this.equipo = equipo;
 		this.resultado = resultado;
 	}
 
-	public Partido getPartido() {
-		return this.partido;
+	public int get_id() {
+		return id;
 	}
 
-	public Equipo getEquipo() {
-		return this.equipo;
+	public Participante get_participante() {
+		return participante;
 	}
 
-	public EnumResultado getResultado() {
-		return this.resultado;
+	public Partido get_partido() {
+		return partido;
 	}
 
-	public int puntos() {
-		// this.resultado -> prediccion
-		// seria mas facil pasarle el equipo_id ?
-		EnumResultado resultadoReal = this.partido.resultado(this.equipo);
+	public Equipo get_equipo() {
+		return equipo;
+	}
+
+	public EnumResultado get_resultado() {
+		return resultado;
+	}
+
+	public int puntos(EnumResultado resultadoReal) {
 		if (this.resultado.equals(resultadoReal)) {
 			return 1;
 		} else {
 			return 0;
 		}
-
 	}
 
 }

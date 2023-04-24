@@ -22,8 +22,8 @@ public class Main {
         Path pathPronostico = Paths.get(args[1]);
     */
 
-        Path pathResultados = Paths.get("C:\\Users\\nicol\\Desktop\\utn-tp-pronostico\\src\\test\\resources\\resultados1.csv");
-        Path pathPronostico = Paths.get("C:\\Users\\nicol\\Desktop\\utn-tp-pronostico\\src\\test\\resources\\pronostico1.csv");
+        Path pathResultados = Paths.get("C:\\Users\\nicol\\Desktop\\utn-tp-pronostico\\src\\test\\resources\\resultados2.csv");
+        Path pathPronostico = Paths.get("C:\\Users\\nicol\\Desktop\\utn-tp-pronostico\\src\\test\\resources\\pronostico2.csv");
 
         // instancio al lector con las rutas
         Reader lectorArchivos = new Reader(pathResultados, pathPronostico);
@@ -42,11 +42,24 @@ public class Main {
     
         // leo pronosticos, calculo puntos y los guardo en una variable
         // capaz es mejor leer el pronostico y hacer el calculo de puntos aparte, pensar
-        int puntos = lectorArchivos.parsearPronostico(partidos);
+        //int puntos = lectorArchivos.parsearPronostico(partidos);
         
+        ArrayList<Pronostico> pronosticos = new ArrayList<Pronostico>();
+        lectorArchivos.parsearPronostico(partidos, pronosticos);
+
+        int puntos = 0;
+        // loopea ambas colecciones, cuando coincide el partido y su prediccion, calculo los puntos
+        for (Partido partido : partidos ) {
+            for (Pronostico pronostico : pronosticos) {
+                if (partido.get_id().equals(pronostico.get_partido().get_id())) {
+                    puntos += pronostico.puntos(partido.resultado(pronostico.get_equipo()));
+                }
+            }
+        }
+
         // mostrar los puntos
-        System.out.println("Los puntos obtenidos por el usuario fueron:");
-        System.out.println(puntos);
+        System.out.println("Los puntos obtenidos por todos los usuarios son: ");
+        System.out.println(puntos/2);
     
 		
 	}

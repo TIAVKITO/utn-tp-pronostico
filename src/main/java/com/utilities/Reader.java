@@ -2,6 +2,7 @@ package com.utilities;
 
 import com.model.Partido;
 import com.model.Equipo;
+import com.model.Participante;
 import com.model.EnumResultado;
 import com.model.Pronostico;
 
@@ -16,7 +17,7 @@ public class Reader {
 
 	private Path pathResultados;
 	private Path pathPronostico;
-	private List<Partido> partidos = new ArrayList<>();
+	//private ArrayList<Partido> partidos = new ArrayList<>();
 
 	// constructor 
 	public Reader(Path pathResultados, Path pathPronostico) {
@@ -25,6 +26,7 @@ public class Reader {
 	}
 
 	public void parsearResultados(ArrayList<Partido> partidos) {
+		// pq aca no digo "List<String> lineasResultados = new List<String>();"
 		List<String> lineasResultados = null;
 
 		// manejo el error si no puede leer las lineas del archivo .csv
@@ -37,28 +39,31 @@ public class Reader {
 
 		// itero cada linea del archivo y voy creando instancias de partido
 		boolean primera = true;
+		Integer id = 1;
         for (String lineaResultado : lineasResultados) {
             // salteo primera linea
             if (primera) {
                 primera = false;
             } else {
                 String[] campos = lineaResultado.split(";");
-                Equipo equipo1 = new Equipo(campos[1]);
-                Equipo equipo2 = new Equipo(campos[6]);
-                Partido partido = new Partido(equipo1, equipo2);
-                partido.setGolesEq1(Integer.parseInt(campos[3]));
-                partido.setGolesEq2(Integer.parseInt(campos[4]));
+                Equipo equipo1 = new Equipo(campos[2], campos[3], campos[4]);
+                Equipo equipo2 = new Equipo(campos[7], campos[8], campos[9]);
+                // y el id de partidos como lo hago?
+                String ronda = campos[0];
+                Partido partido = new Partido(ronda, id, equipo1, equipo2);
+                partido.set_goles_equipo1(Integer.parseInt(campos[5]));
+                partido.set_goles_equipo2(Integer.parseInt(campos[6]));
+                id++;
                 partidos.add(partido);
             }
 		}
 	}
 
-	public int parsearPronostico(ArrayList<Partido> partidos) {
-        int puntos = 0;
-
+	public void parsearPronostico(ArrayList<Partido> partidos, ArrayList<Pronostico> pronosticos) {
         List<String> lineasPronostico = null;
 
-		// manejo el error si no puede leer las lineas del archivo .csv
+		// manejo el error si no puede leer las lineas del archivo .csv  
+		// pero como? hay q hacer otra cosa? pensar
         try {
             lineasPronostico = Files.readAllLines(pathPronostico);
         } catch (IOException e) {
@@ -67,54 +72,58 @@ public class Reader {
         }
 
         boolean primera = true;
+        Integer id = 1;
         for (String lineaPronostico : lineasPronostico) {
             if (primera) {
                 primera = false;
             } else {
                 String[] campos = lineaPronostico.split(";");
-                Equipo equipo1 = new Equipo(campos[0]);
-                Equipo equipo2 = new Equipo(campos[4]);
-                Partido partido = null;
+                Participante participante = new Participante(campos[0], campos[1]);
+                Equipo equipo1 = new Equipo(campos[2]);
+                Equipo equipo2 = new Equipo(campos[6]);
+                Partido partidoSeleccionado = null;
 
-                // me fijo q la linea de pronostico q estoy leyendo coincida con la "linea" del partido q ya guarde
-                for (Partido partidoSeleccionado : partidos) {
-                    if (   partidoSeleccionado.getEquipo1().getNombre().equals(equipo1.getNombre())
-                     	&& partidoSeleccionado.getEquipo2().getNombre().equals(equipo2.getNombre())) {
-                                        		
-                		// si las lineas coinciden determino la prediccion del usuario
-                        partido = partidoSeleccionado;
-		                Equipo equipo = null;
-		                EnumResultado resultado = null;
+                // loop por partidos para selecionar el partido y el equipo de la prediccion
+                for (Partido partido : partidos) {
+                	if (partido.get_equipo1().get_id().equals(equipo1.get_id())
+                		&& partido.get_equipo2().get_id().equals(equipo2.get_id())) {
+                		partidoSeleccionado = partido;
+                		equipo1 = partido.get_equipo1();
+                		equipo2 = partido.get_equipo2();
+                		break;
+                	}
+                }
 
-		                if("X".equals(campos[1])) {
-		                    equipo = equipo1;
-		                    resultado = EnumResultado.GANADOR;
-		                }
-		                if("X".equals(campos[2])) {
-		                    equipo = equipo1;
-		                    resultado = EnumResultado.EMPATE;
-		                }
-		                if("X".equals(campos[3])) {
-		                    equipo = equipo2;
-		                    resultado = EnumResultado.GANADOR;
-		                }
-		                
-		                // creo la prediccion		               
-		                Pronostico pronostico = new Pronostico(partido, equipo, resultado);
-		                
-		                /*
-		                partido = partido seleccionado en el loop de partidos q coincide con la linea de pronostico q estoy leyendo
-		                equipo = el equipo ganador o equipo1 si es empate
-		                resultado = EnumResultado dependiendo de donde esta la X (GANADOR o EMPATE pq siempre paso el equipo ganador si hay)
-		                */		                
+                Pronostico pronostico1 = null;
+                Pronostico pronostico2 = null;
 
-		                // sumar los puntos correspondientes
-		                puntos += pronostico.puntos();
-		                //System.out.println(puntos);
-	            	}
-	            }
-            }
-        }
-        return puntos;
+				if("X".equals(campos[3])) {
+					pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.GANADOR);
+					pronosticos.add(pronostico1);
+					id++;
+					pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.PERDEDOR);
+					pronosticos.add(pronostico2);
+					id++;					
+				}
+
+				if("X".equals(campos[4])) {
+					pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.EMPATE);
+					pronosticos.add(pronostico1);
+					id++;
+					pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.EMPATE);
+					pronosticos.add(pronostico2);
+					id++;					
+				}
+
+				if("X".equals(campos[5])) {
+					pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.PERDEDOR);
+					pronosticos.add(pronostico1);
+					id++;
+					pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.GANADOR);
+					pronosticos.add(pronostico2);
+					id++;					
+				}
+	        }
+	    }           
     }
 }
