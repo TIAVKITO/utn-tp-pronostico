@@ -17,19 +17,15 @@ public class Reader {
 
 	private Path pathResultados;
 	private Path pathPronostico;
-	//private ArrayList<Partido> partidos = new ArrayList<>();
 
-	// constructor 
 	public Reader(Path pathResultados, Path pathPronostico) {
 		this.pathResultados = pathResultados;
 		this.pathPronostico = pathPronostico;
 	}
 
 	public void parsearResultados(ArrayList<Partido> partidos) {
-		// pq aca no digo "List<String> lineasResultados = new List<String>();"
 		List<String> lineasResultados = null;
 
-		// manejo el error si no puede leer las lineas del archivo .csv
 		try {
 			lineasResultados = Files.readAllLines(pathResultados);
 		} catch (IOException e) {
@@ -37,18 +33,15 @@ public class Reader {
 			System.exit(1);
 		}
 
-		// itero cada linea del archivo y voy creando instancias de partido
 		boolean primera = true;
-		Integer id = 1;
+		Integer id = 1; // y si agrego un columna en el archivo csv para determinar los IDs?
         for (String lineaResultado : lineasResultados) {
-            // salteo primera linea
             if (primera) {
                 primera = false;
             } else {
                 String[] campos = lineaResultado.split(";");
                 Equipo equipo1 = new Equipo(campos[2], campos[3], campos[4]);
                 Equipo equipo2 = new Equipo(campos[7], campos[8], campos[9]);
-                // y el id de partidos como lo hago?
                 String ronda = campos[0];
                 Partido partido = new Partido(ronda, id, equipo1, equipo2);
                 partido.set_goles_equipo1(Integer.parseInt(campos[5]));
@@ -62,8 +55,6 @@ public class Reader {
 	public void parsearPronostico(ArrayList<Partido> partidos, ArrayList<Pronostico> pronosticos) {
         List<String> lineasPronostico = null;
 
-		// manejo el error si no puede leer las lineas del archivo .csv  
-		// pero como? hay q hacer otra cosa? pensar
         try {
             lineasPronostico = Files.readAllLines(pathPronostico);
         } catch (IOException e) {
@@ -83,7 +74,6 @@ public class Reader {
                 Equipo equipo2 = new Equipo(campos[6]);
                 Partido partidoSeleccionado = null;
 
-                // loop por partidos para selecionar el partido y el equipo de la prediccion
                 for (Partido partido : partidos) {
                 	if (partido.get_equipo1().get_id().equals(equipo1.get_id())
                 		&& partido.get_equipo2().get_id().equals(equipo2.get_id())) {

@@ -7,7 +7,6 @@ public class Pronostico {
 	private Equipo equipo;
 	private EnumResultado resultado;
 
-	// constructor
 	public Pronostico(int id, Participante participante, Partido partido, Equipo equipo, EnumResultado resultado) {
 		super();
 		this.id = id;
@@ -44,5 +43,4 @@ public class Pronostico {
 			return 0;
 		}
 	}
-
 }

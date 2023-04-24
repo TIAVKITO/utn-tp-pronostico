@@ -60,9 +60,6 @@ public class Partido {
 			}	else {
 				return EnumResultado.PERDEDOR;
 			}	
-		}
-		
+		}	
 	}
-	
-	
 }
