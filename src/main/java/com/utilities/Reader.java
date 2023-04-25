@@ -69,7 +69,8 @@ public class Reader {
                 primera = false;
             } else {
                 String[] campos = lineaPronostico.split(";");
-                Participante participante = new Participante(campos[0], campos[1]);
+                Participante participante = new Participante(campos[1]);
+                participante.set_id(Integer.parseInt(campos[0]));
                 Equipo equipo1 = new Equipo(campos[2]);
                 Equipo equipo2 = new Equipo(campos[6]);
                 Partido partidoSeleccionado = null;
@@ -84,34 +85,31 @@ public class Reader {
                 	}
                 }
 
-                Pronostico pronostico1 = null;
-                Pronostico pronostico2 = null;
-
 				if("X".equals(campos[3])) {
-					pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.GANADOR);
+					Pronostico pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.GANADOR);
 					pronosticos.add(pronostico1);
 					id++;
-					pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.PERDEDOR);
-					pronosticos.add(pronostico2);
-					id++;					
+					//Pronostico pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.PERDEDOR);
+					//pronosticos.add(pronostico2);
+					//id++;					
 				}
 
 				if("X".equals(campos[4])) {
-					pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.EMPATE);
+					Pronostico pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.EMPATE);
 					pronosticos.add(pronostico1);
 					id++;
-					pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.EMPATE);
-					pronosticos.add(pronostico2);
-					id++;					
+					//Pronostico pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.EMPATE);
+					//pronosticos.add(pronostico2);
+					//id++;					
 				}
 
 				if("X".equals(campos[5])) {
-					pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.PERDEDOR);
+					Pronostico pronostico1 = new Pronostico(id, participante, partidoSeleccionado, equipo1, EnumResultado.PERDEDOR);
 					pronosticos.add(pronostico1);
 					id++;
-					pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.GANADOR);
-					pronosticos.add(pronostico2);
-					id++;					
+					//Pronostico pronostico2 = new Pronostico(id, participante, partidoSeleccionado, equipo2, EnumResultado.GANADOR);
+					//pronosticos.add(pronostico2);
+					//id++;					
 				}
 	        }
 	    }           

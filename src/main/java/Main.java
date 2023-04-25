@@ -1,6 +1,7 @@
 import com.model.Partido;
 import com.model.Pronostico;
 import com.utilities.Reader;
+import com.model.Participante;
 
 import java.nio.file.*;
 import java.util.ArrayList;
@@ -33,16 +34,36 @@ public class Main {
         ArrayList<Pronostico> pronosticos = new ArrayList<Pronostico>();
         lectorArchivos.parsearPronostico(partidos, pronosticos);
 
-        int puntos = 0;
-        for (Partido partido : partidos ) {
-            for (Pronostico pronostico : pronosticos) {
-                if (partido.get_id().equals(pronostico.get_partido().get_id())) {
-                    puntos += pronostico.puntos(partido.resultado(pronostico.get_equipo()));
-                }
+        ArrayList<Participante> participantes = new ArrayList<Participante>();
+        for (Pronostico pronostico : pronosticos) {
+            if (participantes.isEmpty()) {
+                participantes.add(pronostico.get_participante());
+            } 
+            Participante ultimoParticipante = participantes.get(participantes.size()-1);
+            if (ultimoParticipante.get_id() != pronostico.get_participante().get_id()) {
+                participantes.add(pronostico.get_participante());
             }
         }
 
-        System.out.println("Los puntos obtenidos por todos los usuarios son: ");
-        System.out.println(puntos/2);	
+        int puntos = 0;
+
+        for (Participante participante : participantes) {
+            for (Partido partido : partidos ) {
+                for (Pronostico pronostico : pronosticos) {
+                    if (partido.get_id().equals(pronostico.get_partido().get_id())
+                        && pronostico.get_participante().get_id().equals(participante.get_id())) {
+                        puntos += pronostico.puntos(partido.resultado(pronostico.get_equipo()));  
+                    }
+                }
+            }
+            participante.set_puntos(puntos);
+            puntos = 0;  
+        }
+
+        for (Participante participante : participantes) {
+            System.out.println("Los puntos obtenidos por " + participante.get_nombre() + " son: ");
+            System.out.println(participante.get_puntos());             
+        }
+
 	}
 }
